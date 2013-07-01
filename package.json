@@ -15,7 +15,8 @@
     "underscore": "*",
     "mongoose": "*",
     "ejs": "*",
-    "nodetime": "*"
+    "nodetime": "*",
+    "spdy": "*"
   },
   "engines": {
     "node": "0.10.x",

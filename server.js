@@ -3,7 +3,8 @@ require('nodetime').profile({ // Nodetime Performance Analytics
     appName: 'RedditInsight' // Email me for access @gdi2290
   });
 // Module dependencies.
-var express = require('express'),
+var spdy = require('spdy'),
+    express = require('express'),
     routes = require('./routes'),
     user = require('./routes/index'),
     http = require('http'),
@@ -11,7 +12,8 @@ var express = require('express'),
     _ = require('underscore'),
     allPostsCollection = require('./dbLibrary.js'),  // why do I have to do this!?
     mongoose = require('mongoose'),
-    ejs = require('ejs');
+    ejs = require('ejs'),
+    fs = require('fs');
 var app = express();
 
 // all environments
@@ -25,6 +27,11 @@ app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, '/public')));
 
+var options = {
+  key: fs.readFileSync(__dirname + '/keys/spdy-key.pem'),
+  cert: fs.readFileSync(__dirname + '/keys/spdy-cert.pem'),
+  ca: fs.readFileSync(__dirname + '/keys/spdy-csr.pem')
+};
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
@@ -34,7 +41,8 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 
 //start server
-http.createServer(app).listen(app.get('port'), function(){
+var server = spdy.createServer(options, app);
+server.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
   if ('reddit' == app.get('env')) {
     allPostsCollection.start(5000, '/subreddits/popular.json?limit=100', 'subs');
