@@ -1,5 +1,9 @@
 Reddit Insight - Reddit Analytics [![Build Status](https://travis-ci.org/gdi2290/RedditInsight.png?branch=master)](https://travis-ci.org/gdi2290/RedditInsight)
 =============
+
+Its been awesome to be part of this team of rock stars!  My code is in a seperate repo at - 
+https://github.com/sheltowt/reddis_data_viz
+
 TODO:
 * better d3 charts
 * refactor design and UX
